@@ -40,6 +40,22 @@ let requestData = async function(_max, symbol, chart='y'){
                             [_sentence, _timestamp, timestamp.timeConverter(_timestamp), _sentiment]
                         )
                     }
+                    else {
+                        if (chart != 'y') { //如果不需要有chart的留言
+                            //chart如果不等於undefined，直接continue
+                            if (data.messages[i].entities.chart != undefined){ 
+                                continue;
+                            }
+                        }
+                        let _sentiment = "None";
+                        let _sentence = data.messages[i].body;
+                        // 瀏覽器為GMT+0
+                        // 程式已經加上8小時
+                        let _timestamp = new Date(data.messages[i].created_at).getTime();
+                        current_data.push(
+                            [_sentence, _timestamp, timestamp.timeConverter(_timestamp), _sentiment]
+                        )
+                    }
                 }
                 resolve(current_data);
             }
